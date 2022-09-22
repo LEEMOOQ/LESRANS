@@ -1,6 +1,7 @@
 from torch import optim
 from torch.utils.data import DataLoader
 import matplotlib.pyplot as plt
+from tqdm import tqdm
 
 from dataset import *
 from net import *
@@ -21,7 +22,7 @@ test_loader = DataLoader(MyDataset(test_data_path), batch_size=25, shuffle=False
 def train(data_loader, net, loss_fn, opt, epoch):
     all_train = 0
     net.train()
-    for i, (img1, img2, img3, rans_loc, les_v) in enumerate(data_loader):
+    for i, (img1, img2, img3, rans_loc, les_v) in enumerate(tqdm(data_loader, leave=False)):
         img1, img2, img3, rans_loc, les_v = img1.to(device), img2.to(device), img3.to(device), rans_loc.to(device), les_v.to(device)
         out_v = net(img1, img2, img3, rans_loc)
         train_loss = loss_fn(out_v, les_v)
@@ -45,7 +46,7 @@ def val(test_loader, model, loss_fn, epoch):
     model.eval()
     loss = 0.0
     with torch.no_grad():
-        for i, (img1, img2, img3, rans_loc, les_v) in enumerate(test_loader):
+        for i, (img1, img2, img3, rans_loc, les_v) in enumerate(tqdm(test_loader, leave=False)):
             img1, img2, img3, rans_loc, les_v = img1.to(device), img2.to(device), img3.to(device), rans_loc.to(device), les_v.to(device)
             out_v = model(img1, img2, img3, rans_loc)
             cur_loss = loss_fn(out_v, les_v)
