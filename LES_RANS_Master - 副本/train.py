@@ -16,13 +16,14 @@ epoch_all = 30
 #
 #26562
 data_loader = DataLoader(MyDataset(data_path), batch_size=100, shuffle=False)
-test_loader = DataLoader(MyDataset(test_data_path), batch_size=25, shuffle=False)
+test_loader = DataLoader(MyDataset(test_data_path), batch_size=100, shuffle=False)
 
 #训练函数
 def train(data_loader, net, loss_fn, opt, epoch):
     all_train = 0
     net.train()
-    for i, (img1, img2, img3, rans_loc, les_v) in enumerate(tqdm(data_loader, leave=False)):
+    loop = tqdm(enumerate(data_loader), total=len(data_loader), leave=False)
+    for i, (img1, img2, img3, rans_loc, les_v) in loop:
         img1, img2, img3, rans_loc, les_v = img1.to(device), img2.to(device), img3.to(device), rans_loc.to(device), les_v.to(device)
         out_v = net(img1, img2, img3, rans_loc)
         train_loss = loss_fn(out_v, les_v)
@@ -32,6 +33,8 @@ def train(data_loader, net, loss_fn, opt, epoch):
         opt.step()
 
         all_train += train_loss.item()
+        loop.set_description(f'Epoch [{epoch}/{epoch_all}]')
+        loop.set_postfix(loss=train_loss.item())
 
         if i % 300 == 1:
             torch.save(net.state_dict(), weight_path)
