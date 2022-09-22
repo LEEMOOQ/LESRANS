@@ -12,14 +12,6 @@ from torchvision import transforms
 # neg_numpy = np.array(neg_list)
 # neg_tensor = torch.from_numpy(neg_numpy)
 
-# def Keep_image_size_open(path, size=(256, 256)):
-#     img = Image.open(path)
-#     temp = max(img.size)
-#     mask = Image.new('RGB', (temp, temp), (0, 0, 0))
-#     mask.paste(img, (0, 0))
-#     mask = mask.resize(size)
-#     return mask
-
 transform = transforms.Compose([
     transforms.ToTensor()
 ])
@@ -90,24 +82,3 @@ def find_label_les_data(path, filename, rans_file):
             # return torch.unsqueeze(torch.from_numpy(np.array(row_list[i][0:3], dtype=float)), dim=0)
             return row_list[i][0:3]
 
-# xls_path_test = "test/"
-xls_path = "D:\\c盘转移\\LES_RANS_Master\\data"     #XYZ_Internal_Table_table_1.000992e-01.csv
-file_name = 'XYZ_Internal_Table_table_1.000992e-01.csv'
-rans_file = [0, 0.140625, -0.237848450000001]
-# path = 'D:\\c盘转移\\LES_RNS图像\\s=10\\RANS\\kcs-bare-rans\\kcs-bare-rans-csv1\\XYZ_Internal_Table_table_1.000992e-01.png'
-# # img1, img2, img3 = dataCut(image_open(path))
-# print(img1.dtype)
-# res = dataGenerate(img1, img2, img3)
-# print(res.size())
-# plt.figure("Image")  # 图像窗口名称
-# plt.imshow(img1)
-# plt.show()
-# df = make_list(xls_path)
-# # for i in range(26528):
-# #     df[i].append('test')
-# print(df[0])
-#
-# les_data = find_label_les_data(xls_path, file_name, rans_file)
-# print(les_data[0])
-# for file in os.listdir(xls_path_test):
-#     print(file)
